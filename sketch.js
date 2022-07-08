@@ -11,43 +11,6 @@ const RIGHT = 2;
 const DOWN = 3;
 const LEFT = 4;
 
-const rules = [
-    // BLANK
-    [
-        [BLANK, UP],
-        [BLANK, RIGHT],
-        [BLANK, DOWN],
-        [BLANK, LEFT],
-    ],
-    // UP
-    [
-        [RIGHT, DOWN, LEFT],
-        [UP, DOWN, LEFT],
-        [BLANK, DOWN],
-        [UP, RIGHT, DOWN],
-    ],
-    // RIGHT
-    [
-        [RIGHT, DOWN, LEFT],
-        [UP, DOWN, LEFT],
-        [UP, RIGHT, LEFT],
-        [BLANK, LEFT]
-    ],
-    // DOWN
-    [
-        [BLANK, UP],
-        [UP, DOWN, LEFT],
-        [UP, RIGHT, LEFT],
-        [UP, RIGHT, DOWN]
-    ],
-    // LEFT
-    [
-        [RIGHT, DOWN, LEFT],
-        [BLANK, RIGHT],
-        [UP, RIGHT, LEFT],
-        [UP, RIGHT, DOWN]
-    ],
-];
 
 function preload() {
     tilesImages[0] = loadImage('img/blank.svg');
@@ -57,18 +20,25 @@ function preload() {
 function setup() {
     createCanvas(800, 800);
 
-    tiles[0] = new Tile(tilesImages[0], [0,0,0,0]);
-    tiles[1] = new Tile(tilesImages[1], [1,1,0,1]);
-    tiles[2] =  tiles[1].rotate(1);
-    tiles[3] =  tiles[1].rotate(2);
-    tiles[4] =  tiles[1].rotate(3);
+    // Load tiles
+    tiles[0] = new Tile(tilesImages[0], [0, 0, 0, 0]);
+    tiles[1] = new Tile(tilesImages[1], [1, 1, 0, 1]);
+    tiles[2] = tiles[1].rotate(1);
+    tiles[3] = tiles[1].rotate(2);
+    tiles[4] = tiles[1].rotate(3);
 
-    for (let i = 0; i < DIM * DIM; i++) {
-        grid[i] = {
-            collapsed: false,
-            options: [BLANK, UP, RIGHT, DOWN, LEFT],
-        }
+    // Define edges
+    for (let i = 0; i < tiles.length; i++) {
+        const tile = tiles[i];
+        tile.analyze(tiles);
     }
+
+    // Create grid
+    for (let i = 0; i < DIM * DIM; i++) {
+        grid[i] = new Cell(tiles.length);
+    }
+
+
 }
 
 function draw() {
@@ -136,14 +106,14 @@ function draw() {
             if (grid[index].collapsed) {
                 nextGrid[index] = grid[index];
             } else {
-                let options = [BLANK, UP, RIGHT, DOWN, LEFT];
+                let options = new Array(tiles.length).fill(0).map((x, i) => i);
 
                 // Looking up
                 if (i > 0) {
                     let up = grid[j + (i - 1) * DIM];
                     let validOptions = [];
                     for (let options of up.options) {
-                        let valid = rules[options][2];
+                        let valid = tiles[options].down;
                         validOptions = validOptions.concat(valid);
                     }
                     checkValid(options, validOptions);
@@ -154,7 +124,7 @@ function draw() {
                     let right = grid[j + 1 + i * DIM];
                     let validOptions = [];
                     for (let options of right.options) {
-                        let valid = rules[options][3];
+                        let valid = tiles[options].left;
                         validOptions = validOptions.concat(valid);
                     }
                     checkValid(options, validOptions);
@@ -165,7 +135,7 @@ function draw() {
                     let down = grid[j + (i + 1) * DIM];
                     let validOptions = [];
                     for (let options of down.options) {
-                        let valid = rules[options][0];
+                        let valid = tiles[options].up;
                         validOptions = validOptions.concat(valid);
                     }
                     checkValid(options, validOptions);
@@ -176,16 +146,13 @@ function draw() {
                     let left = grid[j - 1 + i * DIM];
                     let validOptions = [];
                     for (let options of left.options) {
-                        let valid = rules[options][1];
+                        let valid = tiles[options].right;
                         validOptions = validOptions.concat(valid);
                     }
                     checkValid(options, validOptions);
                 }
 
-                nextGrid[index] = {
-                    options,
-                    collapsed: false
-                }
+                nextGrid[index] = new Cell(options)
             }
         }
     }
