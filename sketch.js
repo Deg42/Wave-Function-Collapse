@@ -1,4 +1,5 @@
 const tiles = [];
+const tilesImages = [];
 
 let grid = [];
 
@@ -49,15 +50,18 @@ const rules = [
 ];
 
 function preload() {
-    tiles[0] = loadImage('img/blank.svg');
-    tiles[1] = loadImage('img/up.svg');
-    tiles[2] = loadImage('img/right.svg');
-    tiles[3] = loadImage('img/down.svg');
-    tiles[4] = loadImage('img/left.svg');
+    tilesImages[0] = loadImage('img/blank.svg');
+    tilesImages[1] = loadImage('img/up.svg');
 }
 
 function setup() {
     createCanvas(800, 800);
+
+    tiles[0] = new Tile(tilesImages[0], [0,0,0,0]);
+    tiles[1] = new Tile(tilesImages[1], [1,1,0,1]);
+    tiles[2] =  tiles[1].rotate(1);
+    tiles[3] =  tiles[1].rotate(2);
+    tiles[4] =  tiles[1].rotate(3);
 
     for (let i = 0; i < DIM * DIM; i++) {
         grid[i] = {
@@ -78,7 +82,7 @@ function draw() {
             let cell = grid[i + j * DIM];
             if (cell.collapsed) {
                 let index = cell.options[0];
-                image(tiles[index], i * w, j * h, w, h);
+                image(tiles[index].img, i * w, j * h, w, h);
             }
             else {
                 noFill();
