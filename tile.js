@@ -1,5 +1,5 @@
 class Tile {
-    constructor(img, edges) {
+    constructor(img, edges, i) {
         this.img = img;
         this.edges = edges;
 
@@ -7,33 +7,41 @@ class Tile {
         this.right = [];
         this.down = [];
         this.left = [];
+
+        if (i !== undefined) {
+            this.index = i;
+        }
     }
 
     analyze(tiles) {
         for (let i = 0; i < tiles.length; i++) {
             let tile = tiles[i];
+
+            // Tile 5 can't match itself
+            if (tile.index == 5 && this.index == 5) continue;
+
             // UP
-            if (tile.edges[2] == this.edges[0]) {
+            if (compareEdge(tile.edges[2], this.edges[0])) {
                 this.up.push(i);
             }
             // RIGHT
-            if (tile.edges[3] == this.edges[1]) {
+            if (compareEdge(tile.edges[3], this.edges[1])) {
                 this.right.push(i);
             }
             // DOWN
-            if (tile.edges[0] == this.edges[2]) {
+            if (compareEdge(tile.edges[0], this.edges[2])) {
                 this.down.push(i);
             }
             // LEFT
-            if (tile.edges[1] == this.edges[3]) {
+            if (compareEdge(tile.edges[1], this.edges[3])) {
                 this.left.push(i);
             }
         }
     }
 
     rotate(num) {
-        const w = this.img.width
-        const h = this.img.height
+        const w = this.img.width;
+        const h = this.img.height;
         const newImg = createGraphics(w, h);
         newImg.imageMode(CENTER);
         newImg.translate(w / 2, h / 2);
@@ -42,10 +50,17 @@ class Tile {
 
         const newEdges = [];
         const len = this.edges.length;
-        for (let i = 0; i < this.edges.length; i++) {
+        for (let i = 0; i < len; i++) {
             newEdges[i] = this.edges[(i - num + len) % len];
         }
-
-        return new Tile(newImg, newEdges);
+        return new Tile(newImg, newEdges, this.index);
     }
+}
+
+function reverseString(s) {
+    return s.split("").reverse().join("");
+}
+
+function compareEdge(a, b) {
+    return a == reverseString(b);
 }

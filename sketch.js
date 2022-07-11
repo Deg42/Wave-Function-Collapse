@@ -1,44 +1,85 @@
-const tiles = [];
+let tiles = [];
 const tilesImages = [];
 
 let grid = [];
 
-const DIM = 20;
-
-const BLANK = 0;
-const UP = 1;
-const RIGHT = 2;
-const DOWN = 3;
-const LEFT = 4;
+// Grid dimensions
+const DIM = 40;
 
 
 function preload() {
-    tilesImages[0] = loadImage('img/blank.svg');
-    tilesImages[1] = loadImage('img/up.svg');
+    // Load images
+    const setTiles = 'circuit'; // Set of tiles ("circuit" or "pipe")
+    const tilesCount = 13; // Including 0
+
+    for (let i = 0; i < tilesCount; i++) {
+        tilesImages[i] = loadImage(`img/${setTiles}/${i}.png`);
+    }
 }
 
+function removeDuplicatedTiles(tiles) {
+    const uniqueTilesMap = {};
+    for (const tile of tiles) {
+        const key = tile.edges.join(','); // ex: "ABB,BCB,BBA,AAA"
+        uniqueTilesMap[key] = tile;
+    }
+    return Object.values(uniqueTilesMap);
+}
+
+
 function setup() {
+    // Create canvas
     createCanvas(800, 800);
+    //randomSeed(1);
 
     // Load tiles
-    tiles[0] = new Tile(tilesImages[0], [0, 0, 0, 0]);
-    tiles[1] = new Tile(tilesImages[1], [1, 1, 0, 1]);
-    tiles[2] = tiles[1].rotate(1);
-    tiles[3] = tiles[1].rotate(2);
-    tiles[4] = tiles[1].rotate(3);
 
-    // Define edges
+    // Pipe tiles
+    // tiles[0] = new Tile(tilesImages[0], ['A', 'A', 'A', 'A']);
+    // tiles[1] = new Tile(tilesImages[1], ['B', 'B', 'A', 'B']);
+
+    // Circuit tiles
+    tiles[0] = new Tile(tilesImages[0], ['AAA', 'AAA', 'AAA', 'AAA']);
+    tiles[1] = new Tile(tilesImages[1], ['BBB', 'BBB', 'BBB', 'BBB']);
+    tiles[2] = new Tile(tilesImages[2], ['BBB', 'BCB', 'BBB', 'BBB']);
+    tiles[3] = new Tile(tilesImages[3], ['BBB', 'BDB', 'BBB', 'BDB']);
+    tiles[4] = new Tile(tilesImages[4], ['ABB', 'BCB', 'BBA', 'AAA']);
+    tiles[5] = new Tile(tilesImages[5], ['ABB', 'BBB', 'BBB', 'BBA']);
+    tiles[6] = new Tile(tilesImages[6], ['BBB', 'BCB', 'BBB', 'BCB']);
+    tiles[7] = new Tile(tilesImages[7], ['BDB', 'BCB', 'BDB', 'BCB']);
+    tiles[8] = new Tile(tilesImages[8], ['BDB', 'BBB', 'BCB', 'BBB']);
+    tiles[9] = new Tile(tilesImages[9], ['BCB', 'BCB', 'BBB', 'BCB']);
+    tiles[10] = new Tile(tilesImages[10], ['BCB', 'BCB', 'BCB', 'BCB']);
+    tiles[11] = new Tile(tilesImages[11], ['BCB', 'BCB', 'BBB', 'BBB']);
+    tiles[12] = new Tile(tilesImages[12], ['BBB', 'BCB', 'BBB', 'BCB']);
+
+    // Indexing tiles
+    for (let i = 0; i < tiles.length; i++) {
+        tiles[i].index = i;
+    }
+    
+    // Rotating tiles, making graphics and removing duplicated
+    const initialTileCount = tiles.length;
+    for (let i = 0; i < initialTileCount; i++) {
+        let tempTiles = [];
+        for (let j = 0; j < 4; j++) {
+            tempTiles.push(tiles[i].rotate(j));
+        }
+        tempTiles = removeDuplicatedTiles(tempTiles);
+        tiles = tiles.concat(tempTiles);
+    }
+
+    // Removing tiles images
+    tiles = tiles.slice(initialTileCount);
+
+    // Adjency rules
     for (let i = 0; i < tiles.length; i++) {
         const tile = tiles[i];
         tile.analyze(tiles);
     }
 
     // Create grid
-    for (let i = 0; i < DIM * DIM; i++) {
-        grid[i] = new Cell(tiles.length);
-    }
-
-
+    startGrid();
 }
 
 function draw() {
@@ -47,14 +88,13 @@ function draw() {
     const w = width / DIM;
     const h = height / DIM;
 
-    for (let i = 0; i < DIM; i++) {
-        for (let j = 0; j < DIM; j++) {
+    for (let j = 0; j < DIM; j++) {
+        for (let i = 0; i < DIM; i++) {
             let cell = grid[i + j * DIM];
             if (cell.collapsed) {
                 let index = cell.options[0];
                 image(tiles[index].img, i * w, j * h, w, h);
-            }
-            else {
+            } else {
                 noFill();
                 stroke(51);
                 rect(i * w, j * h, w, h);
@@ -92,6 +132,10 @@ function draw() {
     const cell = random(gridCopy);
     cell.collapsed = true;
     const pick = random(cell.options);
+    if (pick === undefined) {
+        startGrid();
+        return;
+    }
     cell.options = [pick];
 
 
@@ -170,6 +214,14 @@ function checkValid(arr, valid) {
     }
 }
 
+function startGrid() {
+    for (let i = 0; i < DIM * DIM; i++) {
+        grid[i] = new Cell(tiles.length);
+    }
+}
+
+/*
 function mousePressed() {
     redraw();
 }
+*/
