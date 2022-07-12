@@ -138,7 +138,7 @@ function setup() {
     // // Removing tiles images
     // tiles = tiles.slice(initialTileCount);
 
-    // Adjency rules
+    // Adjacency rules
     for (let i = 0; i < tiles.length; i++) {
         const tile = tiles[i];
         tile.analyze(tiles);
