@@ -4,13 +4,13 @@ const tilesImages = [];
 let grid = [];
 
 // Grid dimensions
-const DIM = 10;
+const DIM = 20;
 
 
 function preload() {
     // Load images
     const setTiles = 'tiny-dungeon'; // Set of tiles ("circuit" or "pipe")
-    const tilesCount = 54; // Including 0
+    const tilesCount = 57; // Including 0
 
     for (let i = 0; i < tilesCount; i++) {
         tilesImages[i] = loadImage(`img/${setTiles}/${i}.png`);
@@ -54,64 +54,67 @@ function setup() {
     // tiles[12] = new Tile(tilesImages[12], ['BBB', 'BCB', 'BBB', 'BCB']);
 
     // Tiny dungeon tiles
-    tiles[0] = new Tile(tilesImages[0], ['AAA', 'AAA', 'AAA', 'AAA']);
-    tiles[1] = new Tile(tilesImages[1], ['AAA', 'AAB', 'BAA', 'AAA']);
-    tiles[2] = new Tile(tilesImages[2], ['AAA', 'AAB', 'BBB', 'BAA']);
-    tiles[3] = new Tile(tilesImages[3], ['AAA', 'AAA', 'AAB', 'BAA']);
-    tiles[4] = new Tile(tilesImages[4], ['CCC', 'BAA', 'AAB', 'CCC']);
-    tiles[5] = new Tile(tilesImages[5], ['CCC', 'CCC', 'BAA', 'AAB']);
-    tiles[6] = new Tile(tilesImages[6], ['AAA', 'AAB', 'BBB', 'BAA']);
-    tiles[7] = new Tile(tilesImages[7], ['BBB', 'BBB', 'BBB', 'BBB']);
-    tiles[8] = new Tile(tilesImages[8], ['BBB', 'BBB', 'BBB', 'BBB']);
-    tiles[9] = new Tile(tilesImages[9], ['BBB', 'BBB', 'CCC', 'BBB']);
-    tiles[10] = new Tile(tilesImages[10], ['BBB', 'DDD', 'CCC', 'BBB']);
-    tiles[11] = new Tile(tilesImages[11], ['BBB', 'BBB', 'CCC', 'DDD']);
+    tiles[0] = new Tile(tilesImages[0], ['CCC', 'CCC', 'CCC', 'CCC']);
+    tiles[1] = new Tile(tilesImages[1], ['CCC', 'CCB', 'BCC', 'CCC']);
+    tiles[2] = new Tile(tilesImages[2], ['CCC', 'CCB', 'BBB', 'BCC']);
+    tiles[3] = new Tile(tilesImages[3], ['CCC', 'CCC', 'CCB', 'BCC']);
+    tiles[4] = new Tile(tilesImages[4], ['SSS', 'BCC', 'CCB', 'BBB']);
+    tiles[5] = new Tile(tilesImages[5], ['SSS', 'BBB', 'BCC', 'CCB']);
+    tiles[6] = new Tile(tilesImages[6], ['CCC', 'CCB', 'ITOP', 'BCC']);
+    tiles[7] = new Tile(tilesImages[7], ['WWW', 'WWW', 'F1', 'WWW']);
+    tiles[8] = new Tile(tilesImages[8], ['WWW', 'WWW', 'F2', 'WWW']);
+    tiles[9] = new Tile(tilesImages[9], ['WWW', 'WWW', 'SSS', 'WWW']);
+    tiles[10] = new Tile(tilesImages[10], ['WWW', 'DDD', 'SSS', 'WWW']);
+    tiles[11] = new Tile(tilesImages[11], ['WWW', 'WWW', 'SSS', 'DDD']);
 
-    tiles[12] = new Tile(tilesImages[12], ['AAA', 'AAA', 'AAA', 'AAA']);
-    tiles[13] = new Tile(tilesImages[13], ['AAB', 'BBB', 'BAA', 'AAA']);
-    tiles[14] = new Tile(tilesImages[14], ['BBB', 'BBB', 'BBB', 'BBB']);
-    tiles[15] = new Tile(tilesImages[15], ['BAA', 'AAA', 'AAB', 'BBB']);
-    tiles[16] = new Tile(tilesImages[16], ['BAA', 'AAB', 'BBB', 'CCC']);
-    tiles[17] = new Tile(tilesImages[17], ['AAB', 'CCC', 'BBB', 'BAA']);
-    tiles[18] = new Tile(tilesImages[18], ['BBB', 'BBB', 'BBB', 'BBB']);
-    tiles[19] = new Tile(tilesImages[19], ['BBB', 'BBB', 'BBB', 'BBB']);
-    tiles[20] = new Tile(tilesImages[20], ['BBB', 'BBB', 'BBB', 'BBB']);
-    tiles[21] = new Tile(tilesImages[21], ['BBB', 'BBB', 'CCC', 'BBB']);
-    tiles[22] = new Tile(tilesImages[22], ['BBB', 'DDD', 'CCC', 'BBB']);
-    tiles[23] = new Tile(tilesImages[23], ['BBB', 'BBB', 'CCC', 'DDD']);
+    tiles[12] = new Tile(tilesImages[12], ['CCC', 'CCC', 'CCC', 'CCC']);
+    tiles[13] = new Tile(tilesImages[13], ['CCB', 'BBB', 'BCC', 'CCC']);
+    tiles[14] = new Tile(tilesImages[14], ['BBB', 'WWW', 'SSS', 'WWW']);
+    tiles[15] = new Tile(tilesImages[15], ['BCC', 'CCC', 'CCB', 'BBB']);
+    tiles[16] = new Tile(tilesImages[16], ['BCC', 'CCB', 'WWW', 'CCC']);
+    tiles[17] = new Tile(tilesImages[17], ['CCB', 'BBB', 'WWW', 'BCC']);
+    tiles[18] = new Tile(tilesImages[18], ['ITOP', 'WWW', 'IBOT', 'WWW']);
+    tiles[19] = new Tile(tilesImages[19], ['WWW', 'WWW', 'F1', 'WWW']);
+    tiles[20] = new Tile(tilesImages[20], ['WWW', 'WWW', 'F2', 'WWW']);
+    tiles[21] = new Tile(tilesImages[21], ['WWW', 'WWW', 'SSS', 'WWW']);
+    tiles[22] = new Tile(tilesImages[22], ['WWW', 'DDD', 'SSS', 'WWW']);
+    tiles[23] = new Tile(tilesImages[23], ['WWW', 'WWW', 'SSS', 'DDD']);
 
-    tiles[24] = new Tile(tilesImages[24], ['AAA', 'AAA', 'AAA', 'AAA']);
-    tiles[25] = new Tile(tilesImages[25], ['AAB', 'BAA', 'AAA', 'AAA']);
-    tiles[26] = new Tile(tilesImages[26], ['CCC', 'BAA', 'AAA', 'AAB']);
-    tiles[27] = new Tile(tilesImages[27], ['BAA', 'AAA', 'AAA', 'AAB']);
-    tiles[28] = new Tile(tilesImages[28], ['BBB', 'BBB', 'BBB', 'BBB']);
-    tiles[29] = new Tile(tilesImages[29], ['BBB', 'BBB', 'BBB', 'BBB']);
-    tiles[30] = new Tile(tilesImages[30], ['BBB', 'CCC', 'CCC', 'CCC']);
-    tiles[31] = new Tile(tilesImages[31], ['BBB', 'CCC', 'CCC', 'CCC']);
-    tiles[32] = new Tile(tilesImages[32], ['BBB', 'CCC', 'CCC', 'CCC']);
-    tiles[33] = new Tile(tilesImages[33], ['BBB', 'BBB', 'CCC', 'BBB']);
-    tiles[34] = new Tile(tilesImages[34], ['BBB', 'DDD', 'CCC', 'BBB']);
-    tiles[35] = new Tile(tilesImages[35], ['BBB', 'BBB', 'CCC', 'DDD']);
+    tiles[24] = new Tile(tilesImages[24], ['CCC', 'CCC', 'CCC', 'CCC']);
+    tiles[25] = new Tile(tilesImages[25], ['CCB', 'BCC', 'CCC', 'CCC']);
+    tiles[26] = new Tile(tilesImages[26], ['SSS', 'BCC', 'CCC', 'CCB']);
+    tiles[27] = new Tile(tilesImages[27], ['BCC', 'CCC', 'CCC', 'CCB']);
+    tiles[28] = new Tile(tilesImages[28], ['BBB', 'WWW', 'SSS', 'WWW']);
+    tiles[29] = new Tile(tilesImages[29], ['BBB', 'WWW', 'SSS', 'WWW']);
+    tiles[30] = new Tile(tilesImages[30], ['IBOT', 'SSS', 'SSS', 'SSS']);
+    tiles[31] = new Tile(tilesImages[31], ['F1', 'SSS', 'SSS', 'SSS']);
+    tiles[32] = new Tile(tilesImages[32], ['F2', 'SSS', 'SSS', 'SSS']);
+    tiles[33] = new Tile(tilesImages[33], ['WWW', 'WWW', 'SSS', 'WWW']);
+    tiles[35] = new Tile(tilesImages[35], ['WWW', 'WWW', 'SSS', 'DDD']);
+    tiles[34] = new Tile(tilesImages[34], ['WWW', 'DDD', 'SSS', 'WWW']);
 
-    tiles[36] = new Tile(tilesImages[36], ['CCC', 'EEE', 'CCC', 'BBB']);
-    tiles[37] = new Tile(tilesImages[37], ['CCC', 'EEE', 'CCC', 'EEE']);
-    tiles[38] = new Tile(tilesImages[38], ['CCC', 'BBB', 'CCC', 'EEE']);
-    tiles[39] = new Tile(tilesImages[39], ['CCC', 'BBB', 'CCC', 'BBB']);
-    tiles[40] = new Tile(tilesImages[40], ['BBB', 'BBB', 'BBB', 'BBB']);
-    tiles[41] = new Tile(tilesImages[41], ['CCC','CCC','CCC','CCC']);
-    tiles[42] = new Tile(tilesImages[42], ['CCC','CCC','CCC','CCC']);
-    tiles[43] = new Tile(tilesImages[43], ['BBB', 'CCC', 'CCC', 'CCC']);
-    tiles[44] = new Tile(tilesImages[44], ['BBB', 'CCC', 'CCC', 'CCC']);
-    tiles[45] = new Tile(tilesImages[45], ['BBB', 'BBB', 'CCC', 'BBB']);
-    tiles[46] = new Tile(tilesImages[46], ['BBB', 'DDD', 'CCC', 'BBB']);
-    tiles[47] = new Tile(tilesImages[47], ['BBB', 'BBB', 'CCC', 'DDD']);
+    tiles[36] = new Tile(tilesImages[36], ['BSS', 'TTT', 'SSB', 'BBB']);
+    tiles[37] = new Tile(tilesImages[37], ['SSS', 'TTT', 'SSS', 'TTT']);
+    tiles[38] = new Tile(tilesImages[38], ['SSB', 'BBB', 'BSS', 'TTT']);
+    tiles[39] = new Tile(tilesImages[39], ['SSS', 'BBB', 'SSS', 'BBB']);
+    tiles[40] = new Tile(tilesImages[40], ['BBB', 'WWW', 'SSS', 'WWW']);
+    tiles[41] = new Tile(tilesImages[41], ['SSS','SSS','SSS','SSS']);
+    tiles[42] = new Tile(tilesImages[42], ['SSS','SSS','SSS','SSS']);
+    tiles[43] = new Tile(tilesImages[43], ['F1', 'SSS', 'SSS', 'SSS']);
+    tiles[44] = new Tile(tilesImages[44], ['F2', 'SSS', 'SSS', 'SSS']);
+    tiles[45] = new Tile(tilesImages[45], ['WWW', 'WWW', 'SSS', 'WWW']);
+    tiles[46] = new Tile(tilesImages[46], ['WWW', 'WWW', 'SSS', 'DDD']);
+    tiles[47] = new Tile(tilesImages[47], ['WWW', 'DDD', 'SSS', 'WWW']);
 
-    tiles[48] = new Tile(tilesImages[48], ['CCC','CCC','CCC','CCC']);
-    tiles[49] = new Tile(tilesImages[49], ['CCC','CCC','CCC','CCC']);
-    tiles[50] = new Tile(tilesImages[50], ['BBB','CCC','CCC','CCC']);
-    tiles[51] = new Tile(tilesImages[51], ['BBB','CCC','CCC','CCC']);
-    tiles[52] = new Tile(tilesImages[52], ['BBB','BBB','CCC','CCC']);
-    tiles[53] = new Tile(tilesImages[53], ['BCC', 'CCC', 'CCC', 'CCB']);
+    tiles[48] = new Tile(tilesImages[48], ['SSS','SSS','SSS','SSS']);
+    tiles[49] = new Tile(tilesImages[49], ['SSS','SSS','SSS','SSS']);
+    tiles[50] = new Tile(tilesImages[50], ['WWW','SSS','SSS','SSS']);
+    tiles[51] = new Tile(tilesImages[51], ['WWW','SSS','SSS','SSS']);
+    tiles[52] = new Tile(tilesImages[52], ['WWW','BBB','SSS','SSS']);
+    tiles[53] = new Tile(tilesImages[53], ['SSS','SSS','SSS','SSS']);
+    tiles[54] = new Tile(tilesImages[54], ['BBB','WWW','SSS','SSS']);
+    tiles[55] = new Tile(tilesImages[55], ['BBB','SSS','SSS','SSS']);
+    tiles[56] = new Tile(tilesImages[56], ['BBB','SSS','SSS','WWW']);
 
 
 
@@ -121,19 +124,19 @@ function setup() {
         tiles[i].index = i;
     }
     
-    // Rotating tiles, making graphics and removing duplicated
-    const initialTileCount = tiles.length;
-    for (let i = 0; i < initialTileCount; i++) {
-        let tempTiles = [];
-        for (let j = 0; j < 4; j++) {
-            tempTiles.push(tiles[i].rotate(j));
-        }
-        tempTiles = removeDuplicatedTiles(tempTiles);
-        tiles = tiles.concat(tempTiles);
-    }
+    // // Rotating tiles, making graphics and removing duplicated
+    // const initialTileCount = tiles.length;
+    // for (let i = 0; i < initialTileCount; i++) {
+    //     let tempTiles = [];
+    //     for (let j = 0; j < 4; j++) {
+    //         tempTiles.push(tiles[i].rotate(j));
+    //     }
+    //     tempTiles = removeDuplicatedTiles(tempTiles);
+    //     tiles = tiles.concat(tempTiles);
+    // }
 
-    // Removing tiles images
-    tiles = tiles.slice(initialTileCount);
+    // // Removing tiles images
+    // tiles = tiles.slice(initialTileCount);
 
     // Adjency rules
     for (let i = 0; i < tiles.length; i++) {
